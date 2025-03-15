@@ -5,8 +5,8 @@ class User extends Model {
   public id!: number;
   public email!: string;
   public name!: string;
-  public createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public created_at!: Date;
+  public updated_at!: Date;
 }
 
 User.init(

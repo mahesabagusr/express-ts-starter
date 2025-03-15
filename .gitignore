@@ -1,3 +1,10 @@
-dist
 node_modules
+coverage
 .env
+.nyc_output
+mocha.txt
+lab.txt
+privateKey.pem
+publicKey.pem
+# Local Netlify folder
+.netlify

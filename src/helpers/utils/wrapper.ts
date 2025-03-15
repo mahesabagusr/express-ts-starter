@@ -12,22 +12,11 @@ import {
 import { Response } from "express";
 import { ERROR as httpError } from "../http-status/statusCode";
 
-type ApiResponse = {
-  status: boolean;
-  data: any;
-  message: string;
-  code: number;
-};
-
-type ErrorResponse = {
-  err: Error;
-  data: null;
-};
-
-type SuccessResponse = {
-  err: null;
-  data: any;
-};
+import {
+  ApiResponse,
+  ErrorResponse,
+  SuccessResponse,
+} from "../../interfaces/wrapper-interface";
 
 const response = (
   res: Response,

@@ -1,26 +1,7 @@
 import dotenv from "dotenv";
 import { Dialect } from "sequelize";
-
+import { Config } from "../../interfaces/config-interface.js";
 dotenv.config({ path: ".env" });
-
-interface ExpressConfig {
-  port: string | undefined;
-  host: string | undefined;
-}
-
-interface DbConfig {
-  database: string | undefined;
-  user: string | undefined;
-  password: string | undefined;
-  host: string | undefined;
-  port: number | undefined; // Port is a number
-  dialect: Dialect;
-}
-
-interface Config {
-  express: ExpressConfig;
-  db: DbConfig;
-}
 
 export const config: Config = {
   express: {
@@ -36,5 +17,9 @@ export const config: Config = {
       ? parseInt(process.env.MYSQL_PORT, 10)
       : undefined,
     dialect: process.env.MYSQL_DIALECT as Dialect,
+  },
+  key: {
+    publicKey: process.env.PUBLIC_KEY_PATH,
+    privateKey: process.env.PRIVATE_KEY_PATH,
   },
 };

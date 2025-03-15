@@ -1,5 +1,4 @@
 import sequelize from "./mysql";
-import User from "../../../models/users";
 
 const initializeDatabase = async () => {
   try {
@@ -7,7 +6,9 @@ const initializeDatabase = async () => {
       console.log("Connection Successfull");
     });
 
-    await sequelize.sync();
+    await sequelize.sync().then(() => {
+      console.log("Database Sync");
+    });
   } catch (err) {
     console.error(
       "Unable to connect to the database or synchronize models:",

@@ -11,10 +11,6 @@ const port = process.env.EXPRESS_PORT || 3000;
 
 app.use("/api/users", userRouter);
 
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Halo selamat datang");
-// });
-
 initializeDatabase();
 
 app.listen(port, () => {
