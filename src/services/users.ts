@@ -8,7 +8,7 @@ export const getUsers = (req: Request, res: Response) => {
 };
 
 export const postUsers = (
-  req: Request<{}, {}, CreateUserDto, createUserQueryParams>,
+  req: Request<{}, {}, CreateUserDto>,
   res: Response<User>
 ) => {
   res.status(201).send({
