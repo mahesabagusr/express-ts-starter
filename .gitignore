@@ -8,3 +8,4 @@ privateKey.pem
 publicKey.pem
 # Local Netlify folder
 .netlify
+logs

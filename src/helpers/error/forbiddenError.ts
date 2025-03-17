@@ -1,4 +1,4 @@
-import CommonError from "./commonError.js";
+import CommonError from "./commonError";
 
 class ForbiddenError extends CommonError {
   constructor(message : string) {
