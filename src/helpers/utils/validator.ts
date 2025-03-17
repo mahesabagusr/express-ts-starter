@@ -1,19 +1,22 @@
 import * as wrapper from "./wrapper";
 import { BadRequestError, NotFoundError } from "../error";
 import { z, ZodSchema } from "zod";
+import { ValidationResult } from "../../interfaces/users-interface";
 
-const isValidPayload = async <T>(
-  payload: unknown,
+export const isValidPayload = async <T>(
+  payload: any,
   model: ZodSchema<T>
-): Promise<{ err: Error | null; data: T | null }> => {
+): Promise<ValidationResult<T>> => {
   try {
-    const validateData = model.parse(payload);
+      console.log(payload);
+    const validateData = await model.parse(payload);
+    // console.log(validateData);
 
     return wrapper.data(validateData);
   } catch (err) {
     if (err instanceof z.ZodError) {
       const errorMessage =
-        err.errors.map((err) => err.message).join(",") || "Invalid Input Data";
+        err.errors.map((err) => err.message).join(", ") || "Invalid Input Data";
 
       return wrapper.error(new BadRequestError(errorMessage));
     }
@@ -21,5 +24,3 @@ const isValidPayload = async <T>(
     return wrapper.error(new NotFoundError("An unexpected error occurred."));
   }
 };
-
-export default isValidPayload;

@@ -1,16 +1,18 @@
-export type ApiResponse = {
+export interface ApiResponse<T> {
   status: boolean;
-  data: any;
+  data: T | null;
   message: string;
   code: number;
-};
+}
 
-export type ErrorResponse = {
+export interface SuccessResponse<T> {
+  err: null;
+  data: T;
+}
+
+export interface ErrorResponse<T> {
   err: Error;
   data: null;
-};
+}
 
-export type SuccessResponse = {
-  err: null;
-  data: any;
-};
+export type ResponseResult<T> = SuccessResponse<T> | ErrorResponse<T>;

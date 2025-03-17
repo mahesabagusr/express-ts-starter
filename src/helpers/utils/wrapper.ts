@@ -16,26 +16,28 @@ import {
   ApiResponse,
   ErrorResponse,
   SuccessResponse,
+  ResponseResult,
 } from "../../interfaces/wrapper-interface";
 
-const response = (
+const response = <T>(
   res: Response,
   type: "success" | "fail",
-  result: any,
-  message: string = " ",
+  result: ResponseResult<T>,
+  message: string = "",
   code: number = 200
-) => {
+): void => {
   let status = type === "success";
-  let data = type === "success" ? result.data : null;
+  let data = type === "success" ? (result as SuccessResponse<T>).data : null;
 
   if (type === "fail") {
     status = false;
     data = null;
-    message = result.err.message || message;
-    code = checkErrorCode(result.err);
+    const error = result as ErrorResponse<T>;
+    message = error.err.message || message;
+    code = checkErrorCode(error.err);
   }
 
-  const apiResponse: ApiResponse = {
+  const apiResponse: ApiResponse<T> = {
     status,
     data,
     message,
@@ -70,7 +72,7 @@ const checkErrorCode = (error: Error): number => {
   }
 };
 
-const data = (data: any): SuccessResponse => ({ err: null, data });
-const error = (err: Error): ErrorResponse => ({ err, data: null });
+const data = <T>(data: T): SuccessResponse<T> => ({ err: null, data });
+const error = <T>(err: Error): ErrorResponse<T> => ({ err, data: null });
 
 export { data, error, response };
