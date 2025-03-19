@@ -11,12 +11,13 @@ import { ValidationResult } from "../interfaces/users-interface";
 import { RegisterUserSchema } from "../schemas/userSchema";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import UserService from "../services/users";
+import { RegisterUserDto } from "../dtos/user-dto";
 
 export const userRegister = async (req: Request, res: Response) => {
   try {
-    const payload: RegisterPayload = { ...req.body };
+    const payload: RegisterUserDto = { ...req.body };
 
-    const validatePayload: ValidationResult<RegisterPayload> =
+    const validatePayload: ValidationResult<RegisterUserDto> =
       await isValidPayload(payload, RegisterUserSchema);
 
     if (validatePayload.err) {
@@ -29,7 +30,7 @@ export const userRegister = async (req: Request, res: Response) => {
       );
     }
 
-    const postRequest = (payload: RegisterPayload) => {
+    const postRequest = (payload: RegisterUserDto) => {
       if (!payload) {
         return payload;
       }
