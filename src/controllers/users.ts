@@ -5,13 +5,12 @@ import {
 } from "../helpers/http-status/statusCode";
 import logger from "../helpers/utils/winston";
 import { Request, Response } from "express";
-import { RegisterPayload } from "../interfaces/users-interface";
 import { isValidPayload } from "../helpers/utils/validator";
 import { ValidationResult } from "../interfaces/users-interface";
-import { RegisterUserSchema } from "../schemas/userSchema";
+import { LoginUserSchema, RegisterUserSchema } from "../schemas/user-schema";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import UserService from "../services/users";
-import { RegisterUserDto } from "../dtos/user-dto";
+import { RegisterUserDto, LoginUserDto } from "../dtos/user-dto";
 
 export const userRegister = async (req: Request, res: Response) => {
   try {
@@ -35,7 +34,7 @@ export const userRegister = async (req: Request, res: Response) => {
         return payload;
       }
 
-      return UserService.registerUser(payload);
+      return UserService.register(payload);
     };
 
     const response = <T>(result: ResponseResult<T>) => {
@@ -52,6 +51,64 @@ export const userRegister = async (req: Request, res: Response) => {
             "success",
             result,
             "User Registration Successfull",
+            http.OK
+          );
+    };
+
+    response(await postRequest(payload));
+  } catch (err: any) {
+    logger.error(
+      `Unexpected error during user registration: ${(err as Error).message}`
+    );
+
+    return wrapper.response(
+      res,
+      "fail",
+      { err: err.message, data: null },
+      "Invalid Payload",
+      httpError.EXPECTATION_FAILED
+    );
+  }
+};
+
+export const userLogin = async (req: Request, res: Response) => {
+  try {
+    const payload: LoginUserDto = { ...req.body };
+
+    const validatePayload: ValidationResult<LoginUserDto> =
+      await isValidPayload(payload, LoginUserSchema);
+
+    if (validatePayload.err) {
+      return wrapper.response(
+        res,
+        "fail",
+        { err: validatePayload.err, data: null },
+        "Invalid Payload",
+        httpError.EXPECTATION_FAILED
+      );
+    }
+
+    const postRequest = (payload: LoginUserDto) => {
+      if (!payload) {
+        return payload;
+      }
+      return UserService.login(payload);
+    };
+
+    const response = <T>(result: ResponseResult<T>) => {
+      result.err
+        ? wrapper.response(
+            res,
+            "fail",
+            result,
+            "User Update Failed",
+            httpError.NOT_FOUND
+          )
+        : wrapper.response(
+            res,
+            "success",
+            result,
+            "User Login Successfull",
             http.OK
           );
     };
