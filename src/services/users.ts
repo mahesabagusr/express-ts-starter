@@ -7,9 +7,10 @@ import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../helpers/error";
 import logger from "../helpers/utils/winston";
+import { RegisterUserDto } from "../dtos/user-dto";
 
 export default class UserService {
-  static async registerUser(payload: RegisterPayload) {
+  static async registerUser(payload: RegisterUserDto) {
     try {
       const { username, email, password } = payload;
 
@@ -40,6 +41,7 @@ export default class UserService {
       logger.info(
         `Creating new user with email ${email} and username ${username}...`
       );
+
       const createUser = await User.create({
         username,
         email,

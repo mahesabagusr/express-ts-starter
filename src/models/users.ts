@@ -5,6 +5,8 @@ class User extends Model {
   public id!: number;
   public email!: string;
   public name!: string;
+  public password!: string;
+  public signature!: string;
   public created_at!: Date;
   public updated_at!: Date;
 }
@@ -21,6 +23,16 @@ User.init(
       allowNull: false,
     },
     email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    signature: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,

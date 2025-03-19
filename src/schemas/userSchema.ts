@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { nanoid } from "nanoid";
 
 export const RegisterUserSchema = z.object({
   username: z.string().min(8, "Username minimal 8 Karakter"),
@@ -9,4 +8,3 @@ export const RegisterUserSchema = z.object({
   signature: z.string().optional(),
 });
 
-export type RegisterUserDto = z.infer<typeof RegisterUserSchema>;
