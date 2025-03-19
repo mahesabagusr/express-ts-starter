@@ -1,20 +1,24 @@
-import { Request, Response } from "express";
-import { RegisterPayload } from "../interfaces/users-interface";
 import * as wrapper from "../helpers/utils/wrapper";
 import User from "../models/users";
-import { UnauthorizedError } from "../helpers/error";
+import { NotFoundError, UnauthorizedError } from "../helpers/error";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../helpers/error";
 import logger from "../helpers/utils/winston";
-import { RegisterUserDto } from "../dtos/user-dto";
+import { LoginUserDto, RegisterUserDto } from "../dtos/user-dto";
+import { ResponseResult } from "../interfaces/wrapper-interface";
+import { JwtToken } from "../interfaces/users-interface";
+import { Op } from "sequelize";
+import { createToken } from "../middlewares/jwt";
 
 export default class UserService {
-  static async registerUser(payload: RegisterUserDto) {
+  static async register(
+    payload: RegisterUserDto
+  ): Promise<ResponseResult<string>> {
     try {
       const { username, email, password } = payload;
 
-      logger.info(`Checking if email ${email} already exists...`);
+      logger.info(`Creating Account: ${username}`);
       const existingEmail: User | null = await User.findOne({
         where: { email },
       });
@@ -23,7 +27,6 @@ export default class UserService {
         return wrapper.error(new UnauthorizedError(`Email Already Exist`));
       }
 
-      logger.info(`Checking if username ${username} already exists...`);
       const existingUser: User | null = await User.findOne({
         where: { username },
       });
@@ -33,14 +36,8 @@ export default class UserService {
       }
 
       const signature: string = nanoid(4);
-      logger.info(`Generated signature: ${signature}`);
 
       const hashPassword: string = await bcrypt.hash(password, 10);
-      logger.info(`Hashing password...`);
-
-      logger.info(
-        `Creating new user with email ${email} and username ${username}...`
-      );
 
       const createUser = await User.create({
         username,
@@ -58,6 +55,33 @@ export default class UserService {
     } catch (err: any) {
       logger.error(`Unexpected error during registration: ${err.message}`);
       logger.error(err.stack);
+      return wrapper.error(new BadRequestError(`${err.message}`));
+    }
+  }
+
+  static async login(payload: LoginUserDto): Promise<ResponseResult<JwtToken>> {
+    try {
+      const { password, identifier } = payload;
+
+      const user = await User.findOne({
+        where: {
+          [Op.or]: [{ username: identifier }, { email: identifier }],
+        },
+      });
+
+      if (!user) {
+        return wrapper.error(new NotFoundError("User not found"));
+      }
+
+      const isValid = await bcrypt.compare(password, user.password);
+
+      if (!isValid) {
+        return wrapper.error(new UnauthorizedError("Incorrect password"));
+      }
+
+      const { accessToken } = await createToken(user);
+      return wrapper.data({ token: accessToken });
+    } catch (err: any) {
       return wrapper.error(new BadRequestError(`${err.message}`));
     }
   }

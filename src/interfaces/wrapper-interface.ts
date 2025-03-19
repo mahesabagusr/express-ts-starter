@@ -10,9 +10,9 @@ export interface SuccessResponse<T> {
   data: T;
 }
 
-export interface ErrorResponse<T> {
+export interface ErrorResponse {
   err: Error;
   data: null;
 }
 
-export type ResponseResult<T> = SuccessResponse<T> | ErrorResponse<T>;
+export type ResponseResult<T> = SuccessResponse<T> | ErrorResponse;

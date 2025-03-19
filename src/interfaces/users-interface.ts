@@ -9,3 +9,7 @@ export interface ValidationResult<T> {
   err?: Error | null;
   data?: T | null;
 }
+
+export interface JwtToken {
+  token: string;
+}

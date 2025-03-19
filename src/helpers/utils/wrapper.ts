@@ -32,7 +32,7 @@ const response = <T>(
   if (type === "fail") {
     status = false;
     data = null;
-    const error = result as ErrorResponse<T>;
+    const error = result as ErrorResponse;
     message = error.err.message || message;
     code = checkErrorCode(error.err);
   }
@@ -73,6 +73,6 @@ const checkErrorCode = (error: Error): number => {
 };
 
 const data = <T>(data: T): SuccessResponse<T> => ({ err: null, data });
-const error = <T>(err: Error): ErrorResponse<T> => ({ err, data: null });
+const error = <T>(err: Error): ErrorResponse => ({ err, data: null });
 
 export { data, error, response };
