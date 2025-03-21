@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../helpers/error";
 import logger from "../helpers/utils/winston";
-import { LoginUserDto, RegisterUserDto } from "../dtos/user-dto";
+import { EditUserDto, LoginUserDto, RegisterUserDto } from "../dtos/user-dto";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import { JwtToken } from "../interfaces/users-interface";
 import { Op } from "sequelize";
@@ -84,5 +84,11 @@ export default class UserService {
     } catch (err: any) {
       return wrapper.error(new BadRequestError(`${err.message}`));
     }
+  }
+
+  static async edit(payload: EditUserDto): Promise<ResponseResult<string>> {
+    try {
+      const { username, fullname, accessToken } = payload;
+    } catch (err: any) {}
   }
 }
