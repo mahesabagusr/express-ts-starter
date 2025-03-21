@@ -12,7 +12,10 @@ import { ResponseResult } from "../interfaces/wrapper-interface";
 import UserService from "../services/users";
 import { RegisterUserDto, LoginUserDto } from "../dtos/user-dto";
 
-export const userRegister = async (req: Request, res: Response) => {
+export const userRegister = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const payload: RegisterUserDto = { ...req.body };
 
@@ -71,7 +74,7 @@ export const userRegister = async (req: Request, res: Response) => {
   }
 };
 
-export const userLogin = async (req: Request, res: Response) => {
+export const userLogin = async (req: Request, res: Response): Promise<void> => {
   try {
     const payload: LoginUserDto = { ...req.body };
 
@@ -114,6 +117,26 @@ export const userLogin = async (req: Request, res: Response) => {
     };
 
     response(await postRequest(payload));
+  } catch (err: any) {
+    logger.error(
+      `Unexpected error during user registration: ${(err as Error).message}`
+    );
+
+    return wrapper.response(
+      res,
+      "fail",
+      { err: err.message, data: null },
+      "Invalid Payload",
+      httpError.EXPECTATION_FAILED
+    );
+  }
+};
+
+const userEdit = (req: Request, res: Response): Promise<void> => {
+  try {
+    const payload = { ...req.body };
+    const { authorization } = req.headers;
+    
   } catch (err: any) {
     logger.error(
       `Unexpected error during user registration: ${(err as Error).message}`

@@ -4,3 +4,6 @@ export interface TokenData {
   signature?: string;
 }
 
+export interface TokenResponse {
+  accessToken: string;
+}

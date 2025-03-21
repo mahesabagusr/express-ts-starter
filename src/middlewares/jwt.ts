@@ -8,12 +8,12 @@ import {
   SUCCESS as http,
 } from "../helpers/http-status/statusCode";
 import { config } from "../helpers/infra/globalConfig";
-import { TokenData } from "../interfaces/jwt-interface";
+import { TokenData, TokenResponse } from "../interfaces/jwt-interface";
 
 const getKey = (keyPath: any) => fs.readFileSync(keyPath, "utf8");
 const privateKey = getKey(config.key.privateKey);
 
-export const createToken = (data: TokenData) => {
+export const createToken = (data: TokenData): TokenResponse => {
   const accessToken: string = jwt.sign(
     {
       username: data.username,
@@ -27,7 +27,7 @@ export const createToken = (data: TokenData) => {
   return { accessToken };
 };
 
-export const decodeToken = (token: string) => {
+export const decodeToken = (token: string): JwtPayload | string => {
   const data: string = token.split(" ")[1];
   const decode: string | JwtPayload = jwt.verify(data, privateKey);
   return decode;
