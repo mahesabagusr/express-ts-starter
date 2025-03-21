@@ -10,7 +10,7 @@ import { ValidationResult } from "../interfaces/users-interface";
 import { LoginUserSchema, RegisterUserSchema } from "../schemas/user-schema";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import UserService from "../services/users";
-import { RegisterUserDto, LoginUserDto } from "../dtos/user-dto";
+import { RegisterUserDto, LoginUserDto, EditUserDto } from "../dtos/user-dto";
 
 export const userRegister = async (
   req: Request,
@@ -137,6 +137,12 @@ const userEdit = (req: Request, res: Response): Promise<void> => {
     const payload = { ...req.body };
     const { authorization } = req.headers;
     
+    const postRequest = (payload : EditUserDto) => {
+      if(!payload){
+        return payload
+      }
+      return User.
+    }
   } catch (err: any) {
     logger.error(
       `Unexpected error during user registration: ${(err as Error).message}`
