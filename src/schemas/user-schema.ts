@@ -14,6 +14,6 @@ export const LoginUserSchema = z.object({
 });
 
 export const EditUserSchema = z.object({
-  username : z.string().min(8, "Username minimal 8 Karakter"),
-  
+  username : z.string().min(8, "Username minimal 8 Karakter").optional(),
+  fullname : z.string().min(8, "Nama Lengkap minimal 8 Karakter").optional(),
 });

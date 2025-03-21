@@ -132,17 +132,37 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const userEdit = (req: Request, res: Response): Promise<void> => {
+export const userEdit = async (req: Request, res: Response): Promise<void> => {
   try {
-    const payload = { ...req.body };
     const { authorization } = req.headers;
-    
-    const postRequest = (payload : EditUserDto) => {
-      if(!payload){
-        return payload
+    const payload = { ...req.body, accessToken: authorization };
+
+    const postRequest = (payload: EditUserDto) => {
+      if (!payload) {
+        return payload;
       }
-      return User.
-    }
+      return UserService.edit(payload);
+    };
+
+    const response = <T>(result: ResponseResult<T>) => {
+      result.err
+        ? wrapper.response(
+            res,
+            "fail",
+            result,
+            "User Update Failed",
+            httpError.NOT_FOUND
+          )
+        : wrapper.response(
+            res,
+            "success",
+            result,
+            "User Login Successfull",
+            http.OK
+          );
+    };
+
+    response(await postRequest(payload));
   } catch (err: any) {
     logger.error(
       `Unexpected error during user registration: ${(err as Error).message}`
