@@ -1,17 +1,14 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import fs from "fs";
 import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 import * as wrapper from "../helpers/utils/wrapper";
 import Unauthorized from "../helpers/error/unautorizedError";
-import {
-  ERROR as httpError,
-  SUCCESS as http,
-} from "../helpers/http-status/statusCode";
+import { ERROR as httpError } from "../helpers/http-status/statusCode";
 import { config } from "../helpers/infra/globalConfig";
 import { TokenData, TokenResponse } from "../interfaces/jwt-interface";
 
-const getKey = (keyPath: any) => fs.readFileSync(keyPath, "utf8");
-const privateKey = getKey(config.key.privateKey);
+const getKey = (keyPath: string) => fs.readFileSync(keyPath, "utf8");
+const privateKey = getKey(config.key.privateKey!);
 
 export const createToken = (data: TokenData): TokenResponse => {
   const accessToken: string = jwt.sign(

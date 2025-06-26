@@ -10,7 +10,7 @@ import { ValidationResult } from "../interfaces/users-interface";
 import { LoginUserSchema, RegisterUserSchema } from "../schemas/user-schema";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import UserService from "../services/users";
-import { RegisterUserDto, LoginUserDto, EditUserDto } from "../dtos/user-dto";
+import { RegisterUserDto, LoginUserDto } from "../dtos/user-dto";
 
 export const userRegister = async (
   req: Request,
@@ -41,7 +41,7 @@ export const userRegister = async (
     };
 
     const response = <T>(result: ResponseResult<T>) => {
-      result.err
+      const message = result.err
         ? wrapper.response(
             res,
             "fail",
@@ -56,18 +56,24 @@ export const userRegister = async (
             "User Registration Successfull",
             http.OK
           );
+
+      return message;
     };
 
     response(await postRequest(payload));
-  } catch (err: any) {
-    logger.error(
-      `Unexpected error during user registration: ${(err as Error).message}`
-    );
+  } catch (err: unknown) {
+    let errMessage = "An unexpected error occurred";
+
+    if (err instanceof Error) {
+      errMessage = err.message;
+    }
+
+    logger.error(`Unexpected error during user registration: ${errMessage}`);
 
     return wrapper.response(
       res,
       "fail",
-      { err: err.message, data: null },
+      { err: errMessage, data: null },
       "Invalid Payload",
       httpError.EXPECTATION_FAILED
     );
@@ -99,7 +105,7 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     };
 
     const response = <T>(result: ResponseResult<T>) => {
-      result.err
+      const message = result.err
         ? wrapper.response(
             res,
             "fail",
@@ -114,6 +120,8 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             "User Login Successfull",
             http.OK
           );
+
+      return message;
     };
 
     response(await postRequest(payload));
@@ -132,48 +140,48 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const userEdit = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { authorization } = req.headers;
-    const payload = { ...req.body, accessToken: authorization };
+// export const userEdit = async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const { authorization } = req.headers;
+//     const payload = { ...req.body, accessToken: authorization };
 
-    const postRequest = (payload: EditUserDto) => {
-      if (!payload) {
-        return payload;
-      }
-      return UserService.edit(payload);
-    };
+//     const postRequest = (payload: EditUserDto) => {
+//       if (!payload) {
+//         return payload;
+//       }
+//       return UserService.edit(payload);
+//     };
 
-    const response = <T>(result: ResponseResult<T>) => {
-      result.err
-        ? wrapper.response(
-            res,
-            "fail",
-            result,
-            "User Update Failed",
-            httpError.NOT_FOUND
-          )
-        : wrapper.response(
-            res,
-            "success",
-            result,
-            "User Login Successfull",
-            http.OK
-          );
-    };
+//     const response = <T>(result: ResponseResult<T>) => {
+//       result.err
+//         ? wrapper.response(
+//             res,
+//             "fail",
+//             result,
+//             "User Update Failed",
+//             httpError.NOT_FOUND
+//           )
+//         : wrapper.response(
+//             res,
+//             "success",
+//             result,
+//             "User Login Successfull",
+//             http.OK
+//           );
+//     };
 
-    response(await postRequest(payload));
-  } catch (err: any) {
-    logger.error(
-      `Unexpected error during user registration: ${(err as Error).message}`
-    );
+//     response(await postRequest(payload));
+//   } catch (err: any) {
+//     logger.error(
+//       `Unexpected error during user registration: ${(err as Error).message}`
+//     );
 
-    return wrapper.response(
-      res,
-      "fail",
-      { err: err.message, data: null },
-      "Invalid Payload",
-      httpError.EXPECTATION_FAILED
-    );
-  }
-};
+//     return wrapper.response(
+//       res,
+//       "fail",
+//       { err: err.message, data: null },
+//       "Invalid Payload",
+//       httpError.EXPECTATION_FAILED
+//     );
+//   }
+// };

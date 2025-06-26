@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../helpers/error";
 import logger from "../helpers/utils/winston";
-import { EditUserDto, LoginUserDto, RegisterUserDto } from "../dtos/user-dto";
+import { LoginUserDto, RegisterUserDto } from "../dtos/user-dto";
 import { ResponseResult } from "../interfaces/wrapper-interface";
 import { JwtToken } from "../interfaces/users-interface";
 import { Op } from "sequelize";
@@ -52,10 +52,9 @@ export default class UserService {
       }
 
       return wrapper.data("Register Successfully");
-    } catch (err: any) {
-      logger.error(`Unexpected error during registration: ${err.message}`);
-      logger.error(err.stack);
-      return wrapper.error(new BadRequestError(`${err.message}`));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      return wrapper.error(new BadRequestError(message));
     }
   }
 
@@ -81,14 +80,9 @@ export default class UserService {
 
       const { accessToken } = await createToken(user);
       return wrapper.data({ token: accessToken });
-    } catch (err: any) {
-      return wrapper.error(new BadRequestError(`${err.message}`));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      return wrapper.error(new BadRequestError(message));
     }
-  }
-
-  static async edit(payload: EditUserDto): Promise<ResponseResult<string>> {
-    try {
-      const { username, fullname, accessToken } = payload;
-    } catch (err: any) {}
   }
 }
