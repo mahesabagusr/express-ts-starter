@@ -1,4 +1,4 @@
-import { DataType, DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import sequelize from "../helpers/db/mysql/mysql";
 
 class User extends Model {

@@ -73,6 +73,6 @@ const checkErrorCode = (error: Error): number => {
 };
 
 const data = <T>(data: T): SuccessResponse<T> => ({ err: null, data });
-const error = <T>(err: Error): ErrorResponse => ({ err, data: null });
+const error = (err: Error): ErrorResponse => ({ err, data: null });
 
 export { data, error, response };

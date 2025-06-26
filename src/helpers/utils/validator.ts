@@ -4,7 +4,7 @@ import { z, ZodSchema } from "zod";
 import { ValidationResult } from "../../interfaces/users-interface";
 
 export const isValidPayload = async <T>(
-  payload: any,
+  payload: T,
   model: ZodSchema<T>
 ): Promise<ValidationResult<T>> => {
   try {
