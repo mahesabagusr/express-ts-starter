@@ -11,7 +11,7 @@ export interface SuccessResponse<T> {
 }
 
 export interface ErrorResponse {
-  err: Error | string;
+  err: Error;
   data: null;
 }
 

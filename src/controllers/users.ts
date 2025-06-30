@@ -62,10 +62,10 @@ export const userRegister = async (
 
     response(await postRequest(payload));
   } catch (err: unknown) {
-    let errMessage = "An unexpected error occurred";
+    let errMessage = Error("An unexpected error occurred");
 
     if (err instanceof Error) {
-      errMessage = err.message;
+      errMessage = Error(err.message);
     }
 
     logger.error(`Unexpected error during user registration: ${errMessage}`);
@@ -125,15 +125,21 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     };
 
     response(await postRequest(payload));
-  } catch (err: any) {
+  } catch (err: unknown) {
     logger.error(
       `Unexpected error during user registration: ${(err as Error).message}`
     );
 
+    let errMessage = Error("An unexpected error occurred");
+
+    if (err instanceof Error) {
+      errMessage = Error(err.message);
+    }
+
     return wrapper.response(
       res,
       "fail",
-      { err: err.message, data: null },
+      { err: errMessage, data: null },
       "Invalid Payload",
       httpError.EXPECTATION_FAILED
     );
