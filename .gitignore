@@ -9,3 +9,5 @@ publicKey.pem
 # Local Netlify folder
 .netlify
 logs
+
+/src/generated/prisma

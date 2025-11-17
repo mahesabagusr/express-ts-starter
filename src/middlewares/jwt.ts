@@ -17,7 +17,7 @@ export const createToken = (data: TokenData): TokenResponse => {
       email: data.email,
       signature: data.signature,
     },
-    privateKey,
+    privateKey as string,
     { algorithm: "RS256", expiresIn: "1d" }
   );
 

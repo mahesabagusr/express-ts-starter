@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @db.VarChar(255)
+  fullname   String   @db.VarChar(255)
+  email      String   @unique(map: "email") @db.VarChar(255)
+  password   String?  @db.VarChar(225)
+  signature  String?  @db.VarChar(8)
+  created_at DateTime @map("createdAt") @db.DateTime(0)
+  updated_at DateTime @updatedAt @map("updatedAt") @db.DateTime(0)
+
+  @@map("users")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model students {
+  id      Int?
+  name    String? @db.VarChar(50)
+  address String? @db.Text
+  grades  String? @db.VarChar(50)
+
+  @@ignore
+}

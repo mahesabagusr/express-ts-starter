@@ -1,8 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import userRouter from "./routes/users";
-import initializeDatabase from "./helpers/db/mysql/initialize";
-import logger from "./helpers/utils/winston";
+import initializePrisma from "./helpers/db/prisma/initialize";
 
 dotenv.config();
 
@@ -12,7 +11,7 @@ const port = process.env.EXPRESS_PORT || 3000;
 
 app.use("/api/users", userRouter);
 
-initializeDatabase();
+initializePrisma(); // or IntializeSquelize() if you are using Sequelize;
 
 app.listen(port, () => {
   console.log(`server is running at http://localhost:${port}`);
