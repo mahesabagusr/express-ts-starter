@@ -2,7 +2,7 @@ import {
   RegisterUserSchema,
   LoginUserSchema,
   EditUserSchema,
-} from "../schemas/user-schema";
+} from "@/schemas/user-schema";
 import { z } from "zod";
 
 export type RegisterUserDto = z.infer<typeof RegisterUserSchema>;

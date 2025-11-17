@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Dialect } from "sequelize";
-import { Config } from "../../interfaces/config-interface.js";
+import { Config } from "@/interfaces/config-interface.js";
 dotenv.config({ path: ".env" });
 
 export const config: Config = {

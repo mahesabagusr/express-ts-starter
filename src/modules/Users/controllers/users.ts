@@ -1,23 +1,16 @@
-import * as wrapper from "../../../helpers/utils/wrapper";
+import * as wrapper from "@/helpers/utils/wrapper";
 import {
   ERROR as httpError,
   SUCCESS as http,
-} from "../../../helpers/http-status/statusCode";
-import logger from "../../../helpers/utils/winston";
+} from "@/helpers/http-status/statusCode";
+import logger from "@/helpers/utils/winston";
 import { Request, Response } from "express";
-import { isValidPayload } from "../../../helpers/utils/validator";
-import { ValidationResult } from "../../../interfaces/users-interface";
-import {
-  LoginUserSchema,
-  RegisterUserSchema,
-} from "../../../schemas/user-schema";
-import { ResponseResult } from "../../../interfaces/wrapper-interface";
-import UserService from "../services/users";
-import {
-  RegisterUserDto,
-  LoginUserDto,
-  EditUserDto,
-} from "../../../dtos/user-dto";
+import { isValidPayload } from "@/helpers/utils/validator";
+import { ValidationResult } from "@/interfaces/users-interface";
+import { LoginUserSchema, RegisterUserSchema } from "@/schemas/user-schema";
+import { ResponseResult } from "@/interfaces/wrapper-interface";
+import UserService from "@/modules/Users/services/users";
+import { RegisterUserDto, LoginUserDto, EditUserDto } from "@/dtos/user-dto";
 
 export const userRegister = async (
   req: Request,

@@ -1,7 +1,8 @@
+import "tsconfig-paths/register";
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import userRouter from "./routes/users";
-import initializePrisma from "./helpers/db/prisma/initialize";
+import userRouter from "@/routes/users";
+import initializePrisma from "@/helpers/db/prisma/initialize";
 
 dotenv.config();
 

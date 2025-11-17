@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import fs from "fs";
 import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
-import * as wrapper from "../helpers/utils/wrapper";
-import Unauthorized from "../helpers/error/unautorizedError";
-import { ERROR as httpError } from "../helpers/http-status/statusCode";
-import { config } from "../helpers/infra/global-config";
-import { TokenData, TokenResponse } from "../interfaces/jwt-interface";
+import * as wrapper from "@/helpers/utils/wrapper";
+import Unauthorized from "@/helpers/error/unautorizedError";
+import { ERROR as httpError } from "@/helpers/http-status/statusCode";
+import { config } from "@/helpers/infra/global-config";
+import { TokenData, TokenResponse } from "@/interfaces/jwt-interface";
 
 const getKey = (keyPath: string) => fs.readFileSync(keyPath, "utf8");
 const privateKey = getKey(config.key.privateKey!);

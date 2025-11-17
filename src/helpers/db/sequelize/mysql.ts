@@ -1,4 +1,4 @@
-import { config } from "../../infra/global-config";
+import { config } from "@/helpers/infra/global-config";
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(

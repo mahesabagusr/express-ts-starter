@@ -8,16 +8,16 @@ import {
   GatewayTimeoutError,
   ServiceUnavailableError,
   UnauthorizedError,
-} from "../error/index";
+} from "@/helpers/error/index";
 import { Response } from "express";
-import { ERROR as httpError } from "../http-status/statusCode";
+import { ERROR as httpError } from "@/helpers/http-status/statusCode";
 
 import {
   ApiResponse,
   ErrorResponse,
   SuccessResponse,
   ResponseResult,
-} from "../../interfaces/wrapper-interface";
+} from "@/interfaces/wrapper-interface";
 
 const response = <T>(
   res: Response,

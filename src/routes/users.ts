@@ -3,8 +3,8 @@ import {
   userEdit,
   userLogin,
   userRegister,
-} from "../modules/Users/controllers/users";
-import { verifyToken } from "../middlewares/jwt";
+} from "@/modules/Users/controllers/users";
+import { verifyToken } from "@/middlewares/jwt";
 
 const router = Router();
 

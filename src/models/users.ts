@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../helpers/db/sequelize/mysql";
+import sequelize from "@/helpers/db/sequelize/mysql";
 
 class User extends Model {
   public id!: number;

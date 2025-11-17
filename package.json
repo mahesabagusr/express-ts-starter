@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --build",
-    "start": "node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts",
+    "start": "node -r tsconfig-paths/register ./dist/index.js",
+    "dev": "nodemon -r tsconfig-paths/register ./src/index.ts",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
     "prisma:migrate": "prisma migrate dev",
@@ -42,6 +42,7 @@
     "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1"

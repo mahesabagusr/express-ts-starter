@@ -1,5 +1,5 @@
 import prisma from "./client";
-import logger from "../../utils/winston";
+import logger from "@/helpers/utils/winston";
 
 const initializePrisma = async () => {
   try {

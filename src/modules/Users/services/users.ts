@@ -1,14 +1,14 @@
-import * as wrapper from "../../../helpers/utils/wrapper";
-import prisma from "../../../helpers/db/prisma/client";
-import { NotFoundError, UnauthorizedError } from "../../../helpers/error";
+import * as wrapper from "@/helpers/utils/wrapper";
+import prisma from "@/helpers/db/prisma/client";
+import { NotFoundError, UnauthorizedError } from "@/helpers/error";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
-import { BadRequestError } from "../../../helpers/error";
-import logger from "../../../helpers/utils/winston";
-import { LoginUserDto, RegisterUserDto } from "../../../dtos/user-dto";
-import { ResponseResult } from "../../../interfaces/wrapper-interface";
-import { JwtToken } from "../../../interfaces/users-interface";
-import { createToken } from "../../../middlewares/jwt";
+import { BadRequestError } from "@/helpers/error";
+import logger from "@/helpers/utils/winston";
+import { LoginUserDto, RegisterUserDto } from "@/dtos/user-dto";
+import { ResponseResult } from "@/interfaces/wrapper-interface";
+import { JwtToken } from "@/interfaces/users-interface";
+import { createToken } from "@/middlewares/jwt";
 
 export default class UserService {
   static async register(

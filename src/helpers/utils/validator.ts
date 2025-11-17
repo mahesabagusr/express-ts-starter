@@ -1,14 +1,14 @@
 import * as wrapper from "./wrapper";
-import { BadRequestError, NotFoundError } from "../error";
+import { BadRequestError, NotFoundError } from "@/helpers/error";
 import { z, ZodSchema } from "zod";
-import { ValidationResult } from "../../interfaces/users-interface";
+import { ValidationResult } from "@/interfaces/users-interface";
 
 export const isValidPayload = async <T>(
   payload: T,
   model: ZodSchema<T>
 ): Promise<ValidationResult<T>> => {
   try {
-      console.log(payload);
+    console.log(payload);
     const validateData = await model.parse(payload);
     // console.log(validateData);
 
