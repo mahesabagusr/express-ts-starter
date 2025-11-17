@@ -1,16 +1,23 @@
-import * as wrapper from "../helpers/utils/wrapper";
+import * as wrapper from "../../../helpers/utils/wrapper";
 import {
   ERROR as httpError,
   SUCCESS as http,
-} from "../helpers/http-status/statusCode";
-import logger from "../helpers/utils/winston";
+} from "../../../helpers/http-status/statusCode";
+import logger from "../../../helpers/utils/winston";
 import { Request, Response } from "express";
-import { isValidPayload } from "../helpers/utils/validator";
-import { ValidationResult } from "../interfaces/users-interface";
-import { LoginUserSchema, RegisterUserSchema } from "../schemas/user-schema";
-import { ResponseResult } from "../interfaces/wrapper-interface";
+import { isValidPayload } from "../../../helpers/utils/validator";
+import { ValidationResult } from "../../../interfaces/users-interface";
+import {
+  LoginUserSchema,
+  RegisterUserSchema,
+} from "../../../schemas/user-schema";
+import { ResponseResult } from "../../../interfaces/wrapper-interface";
 import UserService from "../services/users";
-import { RegisterUserDto, LoginUserDto } from "../dtos/user-dto";
+import {
+  RegisterUserDto,
+  LoginUserDto,
+  EditUserDto,
+} from "../../../dtos/user-dto";
 
 export const userRegister = async (
   req: Request,
@@ -62,10 +69,10 @@ export const userRegister = async (
 
     response(await postRequest(payload));
   } catch (err: unknown) {
-    let errMessage = "An unexpected error occurred";
+    let errMessage = Error("An unexpected error occurred");
 
     if (err instanceof Error) {
-      errMessage = err.message;
+      errMessage = Error(err.message);
     }
 
     logger.error(`Unexpected error during user registration: ${errMessage}`);
@@ -125,63 +132,78 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     };
 
     response(await postRequest(payload));
-  } catch (err: any) {
+  } catch (err: unknown) {
     logger.error(
       `Unexpected error during user registration: ${(err as Error).message}`
     );
 
+    let errMessage = Error("An unexpected error occurred");
+
+    if (err instanceof Error) {
+      errMessage = Error(err.message);
+    }
+
     return wrapper.response(
       res,
       "fail",
-      { err: err.message, data: null },
+      { err: errMessage, data: null },
       "Invalid Payload",
       httpError.EXPECTATION_FAILED
     );
   }
 };
 
-// export const userEdit = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { authorization } = req.headers;
-//     const payload = { ...req.body, accessToken: authorization };
+export const userEdit = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { authorization } = req.headers;
+    const payload = { ...req.body, accessToken: authorization };
 
-//     const postRequest = (payload: EditUserDto) => {
-//       if (!payload) {
-//         return payload;
-//       }
-//       return UserService.edit(payload);
-//     };
+    const postRequest = (payload: EditUserDto) => {
+      if (!payload) {
+        return payload;
+      }
 
-//     const response = <T>(result: ResponseResult<T>) => {
-//       result.err
-//         ? wrapper.response(
-//             res,
-//             "fail",
-//             result,
-//             "User Update Failed",
-//             httpError.NOT_FOUND
-//           )
-//         : wrapper.response(
-//             res,
-//             "success",
-//             result,
-//             "User Login Successfull",
-//             http.OK
-//           );
-//     };
+      return UserService.editUser(payload);
+    };
 
-//     response(await postRequest(payload));
-//   } catch (err: any) {
-//     logger.error(
-//       `Unexpected error during user registration: ${(err as Error).message}`
-//     );
+    const response = <T>(result: ResponseResult<T>) => {
+      const message = result.err
+        ? wrapper.response(
+            res,
+            "fail",
+            result,
+            "User Update Failed",
+            httpError.NOT_FOUND
+          )
+        : wrapper.response(
+            res,
+            "success",
+            result,
+            "User Login Successfull",
+            http.OK
+          );
 
-//     return wrapper.response(
-//       res,
-//       "fail",
-//       { err: err.message, data: null },
-//       "Invalid Payload",
-//       httpError.EXPECTATION_FAILED
-//     );
-//   }
-// };
+      return message;
+    };
+
+    response(await postRequest(payload));
+  } catch (err: unknown) {
+    logger.error(
+      `Unexpected error during user Edit: ${(err as Error).message}`
+    );
+
+    let errMessage = Error("An unexpected error occurred");
+
+    if (err instanceof Error) {
+      errMessage = Error(err.message);
+    }
+
+    return wrapper.response(
+      res,
+      "fail",
+      { err: errMessage, data: null },
+      "Invalid Payload",
+      httpError.EXPECTATION_FAILED
+    );
+  }
+};

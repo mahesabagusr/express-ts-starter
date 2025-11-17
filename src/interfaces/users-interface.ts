@@ -10,6 +10,7 @@ export interface ValidationResult<T> {
   data?: T | null;
 }
 
+
 export interface JwtToken {
   token: string;
 }

@@ -1,5 +1,10 @@
 import { Request, Response, Router } from "express";
-import { userLogin, userRegister } from "../controllers/users";
+import {
+  userEdit,
+  userLogin,
+  userRegister,
+} from "../modules/Users/controllers/users";
+import { verifyToken } from "../middlewares/jwt";
 
 const router = Router();
 
@@ -9,7 +14,8 @@ router.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Hello, world!" });
 });
 
-router.post("/", userRegister);
+router.post("/register", userRegister);
 router.post("/login", userLogin);
+router.post("/edit", verifyToken, userEdit);
 
 export default router;

@@ -4,7 +4,7 @@ export const RegisterUserSchema = z.object({
   username: z.string().min(8, "Username minimal 8 Karakter"),
   email: z.string().email("email tidak valid"),
   password: z.string().min(8, "Password minimal 8 Karakter"),
-  fullname: z.string().min(8),
+  fullname: z.string().min(8, "FullName minimal 8 Karakter"),
   signature: z.string().optional(),
 });
 
